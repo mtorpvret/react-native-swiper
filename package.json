@@ -59,7 +59,7 @@
     "updtr": "^2.0.0"
   },
   "dependencies": {
-    "react-native-vertical-view-pager": "^0.1.1",
+    "react-native-vertical-view-pager": "https://github.com/aemxdp/react_native_vertical_view_pager.git",
     "prop-types": "^15.5.10"
   }
 }
