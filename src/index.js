@@ -676,7 +676,7 @@ export default class extends Component {
             <VertViewPager ref={this.refScrollView}
                            {...this.props}
                            initialPage={this.props.loop ? this.state.index + 1 : this.state.index}
-                           onPageSelected={this.onScrollEnd}
+                           onMomentumScrollEnd={this.onScrollEnd}
                            key={pages.length}
                            style={StyleSheet.flatten([styles.wrapperAndroid, this.props.style])}
                            {...this._panResponder.panHandlers}>

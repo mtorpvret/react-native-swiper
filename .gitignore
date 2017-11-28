@@ -39,3 +39,6 @@ examples/swiper.xcodeproj/xcuserdata
 # Vim
 *.sw*
 dist/
+
+# VS Code
+.vscode/
