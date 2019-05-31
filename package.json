@@ -59,6 +59,7 @@
     "updtr": "^2.0.0"
   },
   "dependencies": {
+    "@react-native-community/viewpager": "^1.1.7",
     "react-native-vertical-view-pager": "https://github.com/mtorpvret/react_native_vertical_view_pager.git",
     "prop-types": "^15.5.10"
   }
