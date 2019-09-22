@@ -195,7 +195,9 @@ export default class extends Component {
   autoplayTimer = null
   loopJumpTimer = null
 
-  componentWillMount () {
+  constructor(props) {
+    super(props)
+
     if (Platform.OS !== 'ios') {
       const shouldSetResponder = (evt, gestureState) => this.props.horizontal
         && (Math.abs(gestureState.vx) > Math.abs(gestureState.vy));
@@ -213,13 +215,13 @@ export default class extends Component {
     }
   }
 
+  componentDidMount () {
+    this.autoplay()
+  }
+
   componentWillReceiveProps (nextProps) {
     if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
     this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
-  }
-
-  componentDidMount () {
-    this.autoplay()
   }
 
   componentWillUnmount () {
@@ -227,9 +229,9 @@ export default class extends Component {
     this.loopJumpTimer && clearTimeout(this.loopJumpTimer)
   }
 
-  componentWillUpdate (nextProps, nextState) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     // If the index has changed, we notify the parent via the onIndexChanged callback
-    if (this.state.index !== nextState.index) this.props.onIndexChanged(nextState.index)
+    if (prevState.index !== this.state.index) this.props.onIndexChanged(this.state.index)
   }
 
   initState (props, updateIndex = false) {
