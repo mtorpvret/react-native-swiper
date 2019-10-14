@@ -220,7 +220,6 @@ export default class extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
     this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
   }
 
@@ -230,6 +229,7 @@ export default class extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!this.props.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
     // If the index has changed, we notify the parent via the onIndexChanged callback
     if (prevState.index !== this.state.index) this.props.onIndexChanged(this.state.index)
   }
