@@ -3,7 +3,6 @@
  * @author leecade<leecade@163.com>
  */
 import { StyleSheet } from 'react-native'
-import VertViewPager from 'react-native-vertical-view-pager'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -17,7 +16,6 @@ import {
   ActivityIndicator,
   PanResponder,
 } from 'react-native'
-import  ViewPagerAndroid from "@react-native-community/viewpager"
 /**
  * Default styles
  * @type {StyleSheetPropType}
@@ -180,7 +178,7 @@ export default class extends Component {
    * Init states
    * @return {object} states
    */
-  state = this.initState(this.props)
+  state = this.initState(this.props, this.state)
 
   /**
    * Initial render flag
@@ -220,7 +218,7 @@ export default class extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
+    this.setState(this.initState(nextProps, this.state, this.props.index !== nextProps.index))
   }
 
   componentWillUnmount () {
@@ -234,9 +232,9 @@ export default class extends Component {
     if (prevState.index !== this.state.index) this.props.onIndexChanged(this.state.index)
   }
 
-  initState (props, updateIndex = false) {
+  initState (props, currentState, updateIndex = false) {
     // set the current state
-    const state = this.state || { width: 0, height: 0, offset: { x: 0, y: 0 } }
+    const state = currentState || { width: 0, height: 0, offset: { x: 0, y: 0 } }
 
     const initState = {
       autoplayEnd: false,
@@ -260,16 +258,16 @@ export default class extends Component {
 
     if (props.width) {
       initState.width = props.width
-    } else if (this.state && this.state.width){
-      initState.width = this.state.width
+    } else if (currentState && currentState.width){
+      initState.width = currentState.width
     } else {
       initState.width = width;
     }
 
     if (props.height) {
       initState.height = props.height
-    } else if (this.state && this.state.height){
-      initState.height = this.state.height
+    } else if (currentState && currentState.height){
+      initState.height = currentState.height
     } else {
       initState.height = height;
     }
@@ -498,12 +496,8 @@ export default class extends Component {
     if (state.dir === 'x') x = diff * state.width
     if (state.dir === 'y') y = diff * state.height
 
-    if (Platform.OS !== 'ios') {
-      this.scrollView && this.scrollView[animated ? 'setPage' : 'setPageWithoutAnimation'](diff)
-    } else {
-      this.scrollView && this.scrollView.scrollTo({ x, y, animated })
-    }
-
+    this.scrollView && this.scrollView.scrollTo({ x, y, animated })
+ 
     // update scroll state
     this.internals.isScrolling = true
     this.setState({
@@ -657,7 +651,6 @@ export default class extends Component {
   }
 
   renderScrollView = pages => {
-    if (Platform.OS === 'ios') {
       return (
         <ScrollView ref={this.refScrollView}
           {...this.props}
@@ -671,33 +664,6 @@ export default class extends Component {
           {pages}
         </ScrollView>
        )
-    }
-    if (this.props.horizontal === false) {
-          return (
-            <VertViewPager ref={this.refScrollView}
-                           {...this.props}
-                           initialPage={this.props.loop ? this.state.index + 1 : this.state.index}
-                           onMomentumScrollEnd={this.onScrollEnd}
-                           key={pages.length}
-                           style={StyleSheet.flatten([styles.wrapperAndroid, this.props.style])}
-                           {...this._panResponder.panHandlers}>
-              {pages}
-            </VertViewPager>
-          )
-        } else {
-          return (
-            <ViewPagerAndroid ref={this.refScrollView}
-                              {...this.props}
-                              initialPage={this.props.loop ? this.state.index + 1 : this.state.index}
-                              onPageSelected={this.onScrollEnd}
-                              key={pages.length}
-                              style={[styles.wrapperAndroid, this.props.style]}
-                              {...this._panResponder.panHandlers}>
-              {pages}
-            </ViewPagerAndroid>
-          )
-
-        }
   }
 
   /**
