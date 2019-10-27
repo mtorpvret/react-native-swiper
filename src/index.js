@@ -217,7 +217,7 @@ export default class extends Component {
     this.autoplay()
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState(this.initState(nextProps, this.state, this.props.index !== nextProps.index))
   }
 
